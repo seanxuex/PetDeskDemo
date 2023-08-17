@@ -33,7 +33,21 @@ export const counterSlice = createSlice({
       delete state.confirmed[appointmentId]
     },
     reshceduleApp: (state, action) => {
-      const { appointmentId, newTime } = action.payload
+      const { appointmentId, newTime, confirmed } = action.payload
+      let appointment
+      if (confirmed) {
+        appointment = state.confirmed[appointmentId]
+        state.confirmed[appointmentId] = {
+          ...appointment,
+          requestedDateTimeOffset: newTime,
+        }
+      } else {
+        appointment = state.unconfirmed[appointmentId]
+        state.unconfirmed[appointmentId] = {
+          ...appointment,
+          requestedDateTimeOffset: newTime,
+        }
+      }
     },
   },
   extraReducers(builder) {

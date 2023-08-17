@@ -4,13 +4,19 @@ import AppointmentItem from './AppointmentItem/AppointmentItem'
 import { StyledContainer, StyledPanel, StyledTitle } from './styles'
 
 function Appointment(props) {
-  const { listOfUnconfirmed, listOfConfirmed, onConfirmApp, onUnconfirmApp } =
-    props
+  const {
+    listOfUnconfirmed,
+    listOfConfirmed,
+    onConfirmApp,
+    onUnconfirmApp,
+    onReschedule,
+  } = props
 
   const mapUnconfirmedItems = () => {
     return listOfUnconfirmed.map(item => {
       return (
         <AppointmentItem
+          onReschedule={onReschedule}
           confirmed={false}
           onConfirmApp={onConfirmApp}
           key={item.appointmentId}
@@ -24,6 +30,7 @@ function Appointment(props) {
     return listOfConfirmed.map(item => {
       return (
         <AppointmentItem
+          onReschedule={onReschedule}
           confirmed={true}
           onUnconfirmApp={onUnconfirmApp}
           key={item.appointmentId}
@@ -52,6 +59,7 @@ function Appointment(props) {
 }
 
 Appointment.propTypes = {
+  onReschedule: PropTypes.func,
   onUnconfirmApp: PropTypes.func,
   onConfirmApp: PropTypes.func,
   listOfUnconfirmed: PropTypes.array,

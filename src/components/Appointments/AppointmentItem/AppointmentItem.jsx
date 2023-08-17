@@ -16,7 +16,7 @@ import SecondaryButton from '../../_reusable/Buttons/SecondaryButton'
 import { StyledCard } from './styles'
 
 function AppointmentItem(props) {
-  const { item, onConfirmApp, onUnconfirmApp, confirmed } = props
+  const { item, onConfirmApp, onUnconfirmApp, confirmed, onReschedule } = props
   const {
     appointmentId,
     appointmentType: type,
@@ -46,6 +46,12 @@ function AppointmentItem(props) {
     }
   }
 
+  const handleReschedule = newTime => {
+    setTheDate(new Date(newTime))
+    setRescheduling(false)
+    onReschedule(appointmentId, new Date(newTime).toISOString(), confirmed)
+  }
+
   const rescheduleContent = () => {
     if (!rescheduling) {
       return (
@@ -59,10 +65,11 @@ function AppointmentItem(props) {
     } else {
       return (
         <DateTimePicker
-          onAccept={newDate => {
-            setTheDate(new Date(newDate))
-            setRescheduling(false)
+          sx={{
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}
+          onAccept={newTime => handleReschedule(newTime)}
           defaultValue={dayjs(theDate)}
         />
       )
@@ -106,6 +113,7 @@ function AppointmentItem(props) {
 }
 
 AppointmentItem.propTypes = {
+  onReschedule: PropTypes.func,
   confirmed: PropTypes.bool,
   item: PropTypes.object,
   onConfirmApp: PropTypes.func,

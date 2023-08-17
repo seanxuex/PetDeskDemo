@@ -7,7 +7,7 @@ import {
   selectStatus,
   selectConfirmedApps,
 } from './selectors'
-import { fetchAll, confirmApp, unconfirmApp } from './reducer'
+import { fetchAll, confirmApp, unconfirmApp, reshceduleApp } from './reducer'
 
 import { STATUS } from '../../utils/constants'
 
@@ -45,6 +45,13 @@ function App() {
     [dispatch],
   )
 
+  const onReshceduleApp = useCallback(
+    (appId, newTime, confirmed) => {
+      dispatch(reshceduleApp({ appointmentId: appId, newTime, confirmed }))
+    },
+    [dispatch],
+  )
+
   useEffect(() => {
     dispatch(fetchAll())
   }, [dispatch])
@@ -76,6 +83,7 @@ function App() {
             allUnconfirmedAppValues.length === 0) && <div>No appointments</div>}
           {allUnconfirmedAppValues && allUnconfirmedAppValues.length > 0 && (
             <Appointments
+              onReschedule={onReshceduleApp}
               onUnconfirmApp={onUnconfirmApp}
               onConfirmApp={onConfirmApp}
               listOfUnconfirmed={allUnconfirmedAppValues}
